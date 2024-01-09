@@ -3,9 +3,9 @@ name: Apply
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on pull request events but only for the "main" branch
-  push: 
-    branches: [ "main" ]
+  # Triggers the workflow on push events but only for the main branch
+  push:
+    branches: [ main ]  
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -26,13 +26,37 @@ jobs:
       # Runs a single command using the runners shell. This is just for testing purposes.
       - name: Run a one-line script
         run: echo Hello, world!
+
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Set up GCP Credentials
+        run: echo "${{ secrets.GOOGLE_CREDENTIALS_1 }}" > gcp-credentials.json
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS_1 }}
   
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
         run: terraform init
         env: 
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS_1 }}
+      
+      # Setup gcloud CLI
+      - name: setup gcloud CLI auth
+        id: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS_1 }}'
         
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+
       # Terraform format
       - name: Terraform Format
         run: terraform fmt -check -recursive
@@ -41,10 +65,10 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}    
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS_1 }}
 
-      # On push to main, build or change infrastructure according to Terraform configuration files
+      # Terraform apply
       - name: Terraform Apply
         run: terraform apply -auto-approve
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS_1 }}
