@@ -43,7 +43,7 @@ jobs:
 
       # Terraform plan
       - name: Terraform Plan
-        run: terraform plan -out=tfplan -var-file=terraform.tfvars
+        run: terraform plan
 
       - name: 'Authenticate with Google Cloud'
         id: 'auth'
