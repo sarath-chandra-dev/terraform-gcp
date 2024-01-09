@@ -34,22 +34,22 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Set up GCP Credentials
-        run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > gcp-credentials.json
+        run: echo "${{ secrets.GCP_SA_KEY }}" > gcp-credentials.json
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
   
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
         run: terraform init
         env: 
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
       
       # Setup gcloud CLI
       - name: setup gcloud CLI auth
         id: auth
         uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
         
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
@@ -65,4 +65,4 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
