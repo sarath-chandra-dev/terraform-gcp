@@ -29,7 +29,7 @@ module "bucket" {
     condition = {
       age            = 365
       with_state     = "ANY"
-      matches_prefix = var.project_id
+      matches_prefix = "the-experience-270205"
     }
   }]
 
