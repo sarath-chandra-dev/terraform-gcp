@@ -14,33 +14,44 @@
  * limitations under the License.
  */
 
-# module "bucket" {
-#   source  = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-#   version = "~> 5.0"
+# Configure the backend to use the Terraform Cloud remote backend.
+terraform {
+  cloud {
+    organization = "Sarath-GCP"
 
-#   name       = "the-experience-270205-bucket"
-#   project_id = "the-experience-270205"
-#   location   = "us"
+    workspaces {
+      name = "gcp-api-driven-workflow"
+    }
+  }
+}
 
-#   lifecycle_rules = [{
-#     action = {
-#       type = "Delete"
-#     }
-#     condition = {
-#       age            = 365
-#       with_state     = "ANY"
-#       matches_prefix = "the-experience-270205"
-#     }
-#   }]
+module "bucket" {
+  source  = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
+  version = "~> 5.0"
 
-#   custom_placement_config = {
-#     data_locations : ["US-EAST4", "US-WEST1"]
-#   }
+  name       = "the-experience-270205-bucket"
+  project_id = "the-experience-270205"
+  location   = "us"
 
-#   iam_members = [{
-#     role   = "roles/storage.objectViewer"
-#     member = "group:test-gcp-ops@test.blueprints.joonix.net"
-#   }]
+  lifecycle_rules = [{
+    action = {
+      type = "Delete"
+    }
+    condition = {
+      age            = 365
+      with_state     = "ANY"
+      matches_prefix = "the-experience-270205"
+    }
+  }]
 
-#   autoclass = true
-# }
+  custom_placement_config = {
+    data_locations : ["US-EAST4", "US-WEST1"]
+  }
+
+  iam_members = [{
+    role   = "roles/storage.objectViewer"
+    member = "group:test-gcp-ops@test.blueprints.joonix.net"
+  }]
+
+  autoclass = true
+}
