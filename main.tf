@@ -25,6 +25,10 @@ terraform {
   }
 }
 
+provider "google" {
+  credentials = file("gcp-credentials.json")
+}
+
 module "bucket" {
   source  = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
   version = "~> 5.0"
