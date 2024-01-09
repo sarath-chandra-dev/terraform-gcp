@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
-# module "bucket" {
-#   source  = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-#   version = "~> 5.0"
+module "bucket" {
+  source  = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
+  version = "~> 5.0"
 
-#   name       = "the-experience-270205-bucket"
-#   project_id = "the-experience-270205"
-#   location   = "us"
+  name       = "the-experience-270205-bucket"
+  project_id = "the-experience-270205"
+  location   = "us"
 
-#   lifecycle_rules = [{
-#     action = {
-#       type = "Delete"
-#     }
-#     condition = {
-#       age            = 365
-#       with_state     = "ANY"
-#       matches_prefix = "the-experience-270205"
-#     }
-#   }]
+  lifecycle_rules = [{
+    action = {
+      type = "Delete"
+    }
+    condition = {
+      age            = 365
+      with_state     = "ANY"
+      matches_prefix = "the-experience-270205"
+    }
+  }]
 
-#   custom_placement_config = {
-#     data_locations : ["US-EAST4", "US-WEST1"]
-#   }
+  custom_placement_config = {
+    data_locations : ["US-EAST4", "US-WEST1"]
+  }
 
-#   iam_members = [{
-#     role   = "roles/storage.objectViewer"
-#     member = "group:test-gcp-ops@test.blueprints.joonix.net"
-#   }]
+  iam_members = [{
+    role   = "roles/storage.objectViewer"
+    member = "group:test-gcp-ops@test.blueprints.joonix.net"
+  }]
 
-#   autoclass = true
-# }
+  autoclass = true
+}
