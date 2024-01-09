@@ -13,32 +13,44 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  terraform:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      # Checks-out your repository 
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
+      # Runs a single command using the runners shell. This is just for testing purposes.
       - name: Run a one-line script
         run: echo Hello, world!
-
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
+        
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
         with:
-          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  
+      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+      - name: Terraform Init
+        run: terraform init
 
+      # Set up the Cloud CLI
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
 
-      - name: 'Use gcloud CLI'
+      # Use the Cloud CLI
+      - name: 'Use gcloud CLI and verify installation'
         run: 'gcloud info'
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Test some workflow commands
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
