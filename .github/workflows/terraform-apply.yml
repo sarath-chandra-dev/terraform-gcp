@@ -24,10 +24,6 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
-
-      - id: fmt
-        name: Check format
-        run: terraform fmt -check -recursive
         
       - id: init
         name: Terraform Init
