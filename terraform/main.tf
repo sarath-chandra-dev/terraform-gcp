@@ -12,11 +12,11 @@ provider "google" {
   region = "us-central1"
 }
 
-# resource "google_storage_bucket" "raw" {
-#   project = var.project
-#   name = "demo-bucket-terraform-2023"
-#   force_destroy = false
-#   uniform_bucket_level_access = true
-#   location = var.region
-#   labels = local.labels
-# }
+resource "google_storage_bucket" "raw" {
+  project = var.project
+  name = "demo-bucket-terraform-2023"
+  force_destroy = false
+  uniform_bucket_level_access = true
+  location = var.region
+  labels = local.labels
+}
