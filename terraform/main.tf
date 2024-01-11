@@ -8,8 +8,8 @@ terraform {
 }
 
 provider "google" {
-  project = var.project
-  region = var.region
+  project = "the-experience-270205"
+  region = "us-central1"
 }
 
 resource "google_storage_bucket" "raw" {
