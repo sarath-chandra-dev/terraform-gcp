@@ -28,9 +28,5 @@ jobs:
       - id: init
         name: Terraform Init
         run: |
-          terraform init \
-          -input=false \
-          -backend-config="credentials=${{ secrets.GOOGLE_CREDENTIALS_1 }}" \
-          -backend-config="prefix=terraform-demo" \
-          -backend-config="bucket=bucket-tf-state-storage-2023"
+          terraform init
     
