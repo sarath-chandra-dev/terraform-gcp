@@ -30,15 +30,4 @@ jobs:
         run: terraform init \
               -input=false \
               -backend-config="credentials=${{ secrets.GOOGLE_CREDENTIALS_1 }}" \
-              -backend-config="prefix=terraform-demo" -backend-config="bucket-tf-state-storage-2023"      
-
-      # - name: Terraform Plan
-      #   run: terraform plan
-      #   env:
-      #     GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS_1 }}
-
-      # # Terraform apply
-      # - name: Terraform Apply
-      #   run: terraform apply -auto-approve
-      #   env:
-      #     GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS_1 }}
+              -backend-config="prefix=terraform-demo" -backend-config="bucket-tf-state-storage-2023"
