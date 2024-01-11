@@ -14,7 +14,7 @@ provider "google" {
 
 resource "google_storage_bucket" "raw" {
   project = var.project
-  name = "${var.data-project}-raw"
+  name = "demo-bucket-terraform-2023"
   force_destroy = false
   uniform_bucket_level_access = true
   location = var.region
